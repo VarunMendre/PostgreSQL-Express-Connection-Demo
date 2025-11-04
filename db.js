@@ -10,7 +10,13 @@ export const pool = new Pool({
   port: process.env.PG_PORT,
 });
 
-pool
-  .connect()
-  .then(() => console.log("POstgreSQL Connected Successfully"))
-  .catch((err) => console.error("PostgreSql Connection Error", err));
+(async () => {
+    try {
+        const client = await pool.connect();
+        console.log("PostgreSQL Connected Successfully");
+        client.release();
+    } catch (err) {
+        console.log("PostgreSql Connection Error");
+    }
+})();
+
